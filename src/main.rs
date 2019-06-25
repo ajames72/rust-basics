@@ -11,6 +11,11 @@ fn main() {
     parameter_test(5);
     scope_test();
     return_value_test();
+    set_string_example();
+    ownership_and_functions();
+    let arr: [i32; 5] = return_array();
+    println!("Returned array length {}", arr.len());
+
     println!("Guess the number!");
     println!("Please input the guess!");
 
@@ -131,4 +136,113 @@ fn five() -> i32 {
 
 fn plus_one(x: i32) -> i32 {
     x + 1
+}
+
+fn set_string_example() {
+    // (::) is an operator that allows us to namespace
+    // this particular from function under the String
+    // type rather than using some sort of name like 'string_from'
+    let mut s  = String::from("hello");
+    
+    s.push_str(", world!");
+    
+    println!("{}", s);
+}
+
+// passing a variable to a function will either move or copy a variable
+fn ownership_and_functions() {
+    let s = String::from("string var to be moved as function param");  // s comes into scope
+
+    takes_ownership(s);             // s's value moves into the function...
+                                    // ... and so is no longer valid here
+    // println!("Testing s {}", s); // err - value borrowed here after move
+
+    let x = 5;                      // x comes into scope
+
+    makes_copy(x);                  // x would move into the function,
+                                    // but i32 is Copy, so it’s okay to still
+                                    // use x afterward
+    let s1 = gives_ownership();
+
+    let s2 = String::from("comes into scope");
+
+    let s3 = takes_and_gives_back(s2);
+    
+    println!("The strings {} {}", s1, s3);
+    
+    let mut s4 = String::from("The strings ");
+    
+    // ampersands are references, and they allow you
+    // to refer to some value without taking ownership of it
+    // s4.push_str(&s1);
+    // 
+    // s4.push_str(" ");
+    // 
+    // s4.push_str(&s3);
+    
+    concat_strings(&mut s4, &s1, &s3);
+    // let (s5, len) = calculate_length(s4);
+    // 
+    // println!("The length of '{}' is {}", s5, len);
+    let len = calculate_length(&s4);
+    
+    println!("The length of '{}' is {}", s4, len);
+    
+    let len = first_word(&s4);
+    
+    println!("The length of the first word '{}' is {}", &s4[0..len], len);
+
+} // Here, x goes out of scope, then s. But because s's value was moved, nothing
+  // special happens.
+
+fn takes_ownership(some_string: String) { // some_string comes into scope
+    println!("{}", some_string);
+} // Here, some_string goes out of scope and `drop` is called. The backing
+  // memory is freed.
+
+fn makes_copy(some_integer: i32) { // some_integer comes into scope
+    println!("{}", some_integer);
+} // Here, some_integer goes out of scope. Nothing special happens.
+
+fn gives_ownership() -> String {
+    let some_string = String::from("Hello");
+    
+    some_string
+}
+
+fn takes_and_gives_back(a_string: String) -> String {
+    a_string
+}
+
+fn concat_strings(concat_string: &mut String, str_a: &String, str_b: &String) {
+    concat_string.push_str(str_a);
+    concat_string.push_str(" ");
+    concat_string.push_str(str_b);
+}
+
+// fn calculate_length(s: String) -> (String, usize) {
+//     let length = s.len();
+// 
+//     (s, length)
+// }
+fn calculate_length(s: &String) -> usize {
+    s.len()
+}
+
+fn first_word(s: &String) -> usize {
+    let bytes = s.as_bytes();
+
+    for(i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return i;
+        }
+    }
+
+    s.len()
+}
+
+fn return_array() -> [i32; 5] {
+    let array: [i32; 5] = [1, 2, 3, 4, 5];
+    
+    array
 }
