@@ -13,6 +13,7 @@ fn main() {
     return_value_test();
     set_string_example();
     ownership_and_functions();
+    structs_test();
     let arr: [i32; 5] = return_array();
     println!("Returned array length {}", arr.len());
 
@@ -245,4 +246,55 @@ fn return_array() -> [i32; 5] {
     let array: [i32; 5] = [1, 2, 3, 4, 5];
     
     array
+}
+
+fn structs_test() {
+    let rect1 = Rectangle { width: 30, height: 50};
+
+    println!(
+        "The area of the rectangle dimens {:?} is {} square pixels.",
+        rect1,
+        rect1.area()
+    );
+
+    let rect2 = Rectangle { width: 10, height: 40 };
+
+    println!(
+        "The area of the rectangle 2 dimens {:?} is {} square pixels. Can rect1 hold rect2? {}",
+        rect2,
+        rect2.area(),
+        rect1.can_hold(&rect2)
+    );
+
+    // Associated function
+    // To call this associated function, we use the :: syntax with the struct name
+    let sq = Rectangle::square(35);
+
+    println!("Can rect2 hold sq? {}", rect2.can_hold(&sq));
+}
+
+#[derive(Debug)]
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+impl Rectangle {
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+
+    fn can_hold(&self, rectangle: &Rectangle) -> bool {
+        let this_area = self.width * self.height;
+        let rect_area = rectangle.width * rectangle.height;
+        if this_area > rect_area {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    fn square(size: u32) -> Rectangle {
+        Rectangle { width: size, height: size }
+    }
 }
