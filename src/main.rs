@@ -308,3 +308,11 @@ fn input_check(opt: &String) {
         _ => println!("Bad!"),
     }
 }
+
+// Also
+// fn input_check(opt: &String) {
+//     match opt.trim() as &str {
+//         "one" => println!("happy days"),
+//         _ => println!("Bad!"),
+//     }
+// }
