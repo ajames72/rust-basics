@@ -1,4 +1,5 @@
 use std::io;
+use std::convert::AsRef;
 
 fn main() {
     mut_test();
@@ -26,6 +27,8 @@ fn main() {
         .expect("Failed to real line.");
 
     println!("You guessed {}", guess);
+    
+    input_check(&guess);
 }
 
 fn mut_test() {
@@ -296,5 +299,12 @@ impl Rectangle {
 
     fn square(size: u32) -> Rectangle {
         Rectangle { width: size, height: size }
+    }
+}
+
+fn input_check(opt: &String) {
+    match opt.trim().as_ref() {
+        "one" => println!("happy days"),
+        _ => println!("Bad!"),
     }
 }
