@@ -1,9 +1,11 @@
 use std::io;
 use std::convert::AsRef;
 mod basics;
+mod static_vals_test;
 use basics::literals;
 use basics::functions;
 use basics::scope;
+use static_vals_test::static_values;
 
 fn main() {
     mut_test();
@@ -21,6 +23,7 @@ fn main() {
     structs_test();
     let arr: [i32; 5] = return_array();
     println!("Returned array length {}", arr.len());
+    static_vals_test_fn();
 
     println!("Guess the number!");
     println!("Please input the guess!");
@@ -106,6 +109,11 @@ fn structs_test() {
     let sq = Rectangle::square(35);
 
     println!("Can rect2 hold sq? {}", rect2.can_hold(&sq));
+}
+
+fn static_vals_test_fn() {
+    println!("{}", static_values::MY_TYPE.value_a);
+    println!("{}", static_values::MY_TYPE.value_b);
 }
 
 #[derive(Debug)]
