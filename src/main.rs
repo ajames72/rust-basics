@@ -47,6 +47,8 @@ fn const_test() {
     const MY_CONST: u32 = 100_000;
     println!("Value of MY_CONST {}", MY_CONST);
 
+    // 'static lifetime elision
+    // https://doc.rust-lang.org/reference/lifetime-elision.html#static-lifetime-elision
     const STRING_CONST: &'static str = "rust basics";
     println!("String const {}", STRING_CONST);
 }
