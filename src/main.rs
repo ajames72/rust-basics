@@ -2,10 +2,14 @@ use std::io;
 use std::convert::AsRef;
 mod basics;
 mod static_vals_test;
+mod collections;
+mod errors;
 use basics::literals;
 use basics::functions;
 use basics::scope;
 use static_vals_test::static_values;
+use collections::vectors;
+use errors::error_handling;
 
 fn main() {
     mut_test();
@@ -21,9 +25,15 @@ fn main() {
     functions::return_value_test();
     scope::ownership_and_functions();
     structs_test();
+    vectors::iterate_over_values_in_a_vector();
     let arr: [i32; 5] = return_array();
     println!("Returned array length {}", arr.len());
     static_vals_test_fn();
+
+    error_handling::controlling_flow(2);
+
+    // error_handling::throw_error(2);
+    // error_handling::throw_error(100);
 
     println!("Guess the number!");
     println!("Please input the guess!");
@@ -34,8 +44,23 @@ fn main() {
         .expect("Failed to real line.");
 
     println!("You guessed {}", guess);
-    
-    input_check(&guess);
+
+    let guess = match u8::from_str_radix(&guess.trim(), 10) {
+        Ok(num) => num,
+        Err(_) => {
+            panic!("Cannot parse value");
+        }
+    };
+
+    // let guess: u8 = match guess.trim().parse() {
+    //         // parse will return an 'ok' value and Ok will return the number.
+    //         Ok(num) => num,
+    //         // If it cannot parse, the Err pattern is matched ('_' is a catch-all pattern)
+    //         Err(_) => {
+    //             panic!("Cannot parse value");
+    //         },
+    //     };
+    error_handling::throw_error(guess);
 }
 
 fn mut_test() {
@@ -142,6 +167,7 @@ impl Rectangle {
     }
 }
 
+#[allow(dead_code)]
 fn input_check(opt: &String) {
     match opt.trim().as_ref() {
         "one" => println!("happy days"),
