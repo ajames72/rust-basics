@@ -1,5 +1,8 @@
+extern crate ansi_term;
 use std::io;
 use std::convert::AsRef;
+use ansi_term::Colour;
+use ansi_term::Style;
 mod basics;
 mod static_vals_test;
 mod collections;
@@ -9,41 +12,55 @@ use basics::functions;
 use basics::scope;
 use static_vals_test::static_values;
 use collections::vectors;
+use collections::arrays;
 use errors::error_handling;
 
 fn main() {
+    let heading_style = Style::new().italic();
+    print!("{}[2J", 27 as char);
+    println!("{}", Colour::Yellow.bold().paint("---------------------"));
+    println!("{}", Colour::Yellow.bold().paint("---- Rust Basics ----"));
+    println!("{}", Colour::Yellow.bold().paint("---------------------"));
+    println!("{}", heading_style.paint("\n\nCommon Programming Concepts:\n---------------------------"));
     mut_test();
     const_test();
     spacing_test();
     set_string_example();
+    println!("{}", heading_style.paint("\n\nLiterals:\n------------"));
     literals::integer_literal_test();
     literals::numeric_operations_test();
     literals::character_test();
     literals::compound_type_test();
+    println!("{}", heading_style.paint("\n\nFunctions:\n-----------"));
     functions::parameter_test(5);
     functions::scope_test();
     functions::return_value_test();
+    println!("{}", heading_style.paint("\n\nScope and Ownership:\n-------------------"));
     scope::ownership_and_functions();
     structs_test();
+    println!("{}", heading_style.paint("\n\nCollections:\n--------------"));
     vectors::iterate_over_values_in_a_vector();
-    let arr: [i32; 5] = return_array();
-    println!("Returned array length {}", arr.len());
+    arrays::list_array();
+    println!("{}", heading_style.paint("\n\nStatic Values:\n---------------"));
     static_vals_test_fn();
 
+    println!("{}", heading_style.paint("\n\nError handling:\n------------------"));
     error_handling::controlling_flow(2);
 
     // error_handling::throw_error(2);
     // error_handling::throw_error(100);
+    println!("{}", Colour::Yellow.bold().paint("\n-----------------------------"));
+    println!("{}", Colour::Yellow.bold().paint("---- Error Handling Game ----"));
+    println!("{}", Colour::Yellow.bold().paint("-----------------------------"));
 
-    println!("Guess the number!");
-    println!("Please input the guess!");
+    println!("\n{}", Colour::Blue.bold().paint("Guess the number! Please input your guess..."));
 
     let mut guess = String::new();
 
     io::stdin().read_line(&mut guess)
         .expect("Failed to real line.");
 
-    println!("You guessed {}", guess);
+    println!("{} {}", Colour::Green.paint("You guessed:"), Colour::Green.paint(&guess));
 
     let guess = match u8::from_str_radix(&guess.trim(), 10) {
         Ok(num) => num,
@@ -103,12 +120,6 @@ fn set_string_example() {
     s.push_str(", world!");
     
     println!("{}", s);
-}
-
-fn return_array() -> [i32; 5] {
-    let array: [i32; 5] = [1, 2, 3, 4, 5];
-    
-    array
 }
 
 fn structs_test() {

@@ -5,3 +5,4 @@ authors = ["ajames72 <andrew.james@ajmebc.co.uk>"]
 edition = "2018"
 
 [dependencies]
+ansi_term = "0.12.1"

@@ -1,4 +1,6 @@
 pub mod error_handling {
+    use ansi_term::Colour;
+
     #[allow(dead_code)]
     pub fn my_panic() {
         panic!("crash and burn");
@@ -51,10 +53,12 @@ pub mod error_handling {
         let r = check_value(opt);
         match r {
             Ok(r) => {
-                println!("will not throw errow --> {}", r);
+                // println!("Correct Guess, no error --> {}", r);
+                println!("{} {}", Colour::Green.paint("Correct Guess, no error -->"), Colour::Green.paint(r.to_string()));
             },
             Err(error) => {
-                println!("this is an error {}", error);
+                // println!("this is an error {}", error);
+                println!("{} {}", Colour::Red.paint("Wrong Guess! this is an error -->"), Colour::Red.paint(error));
             }
         };
     }

@@ -22,3 +22,16 @@ pub mod vectors {
         }
     }
 }
+
+pub mod arrays {
+    fn return_array() -> [i32; 5] {
+        let array: [i32; 5] = [1, 2, 3, 4, 5];
+        
+        array
+    }
+
+    pub fn list_array() {
+        let arr: [i32; 5] = return_array();
+        println!("Returned array length {}", arr.len());
+    }
+}
